@@ -2,8 +2,6 @@
 #include "tilastot.h"
 
 void smooth::add(float newValue) {
-    static int add_i = 0;
-    
     if(values.size() == max_size) {
         values[add_i] = newValue;
         add_i++;
@@ -35,7 +33,7 @@ void pensseli::setup() {
 
 
 void pensseli::drawBrush() {       
-    const int blur_steps = 10;
+    const int blur_steps = 20; //oli: 10
     //float koko_step = koko / (2*blur_steps);
     ofPoint P(MAX_KOKO/2, MAX_KOKO/2);
     
@@ -44,7 +42,7 @@ void pensseli::drawBrush() {
         
         //piirretään valkoisella brush läpinäkyvälle. Stroken piirrossa käytetään värimodulointia
         ofEnableBlendMode(OF_BLENDMODE_ADD);
-        int alpha = 2.6 * 256 / blur_steps;
+        int alpha = 3.2 * 256 / blur_steps; //oli: 2.6
         ofSetColor(255,255,255, alpha);
         
         for(unsigned int blur_i = 0; blur_i < blur_steps; blur_i++) {
@@ -75,6 +73,11 @@ void pensseli::strokeTo(ofPoint kohde) {
     //tee viiva nykyisestä sijainnista kohteeseen
     ofVec2f v = kohde - sijainti;
     float L = v.length();
+    float MAX_STROKE_LENGTH = 1000;
+    if(L > MAX_STROKE_LENGTH) {
+        std::cout << "pensseli::strokeTo: liian pitkä veto! (" << L << ")\n";
+        return;
+    }
     
     //tehdään v:stä suuntavektori
     v.normalize();
@@ -150,7 +153,7 @@ void Monitori::teeVeto(ofPoint kohde, float paksuus, float sumeus) {
         return;
     }
     // koko: 0 ... MAX_KOKO/(4+2/3)
-    pensseli::koko = ofClamp(pow(paksuus, 0.7) * MAX_KOKO / (4+2/3), 1, MAX_KOKO / (4+2/3) );    
+    pensseli::koko = ofClamp(pow(paksuus, 0.7) * MAX_KOKO / (4+2/3), 1, MAX_KOKO / (4+2/3) ); 
     // blur: 0...16
     pensseli::blur = ofClamp(pow(sumeus, 2) * 16, 0.1, 16);    
     
@@ -192,13 +195,13 @@ void Monitori::piirraKokoViiva(const Viiva& viiva) {
     
     tyhjenna();
     piirraVari(viiva.vari);
-   // std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
     
     std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
     std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
     
-    if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
-        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n" << sumeudet.size() << "/" << paksuudet.size() << "/" << viiva.pisteet.size() << '\n';
+    if(paksuudet.size() != viiva.pisteet.size() || sumeudet.size() != viiva.pisteet.size() ) {
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
         return;
     }
     
@@ -230,13 +233,14 @@ void Monitori::piirraViivaAlusta(const Viiva& viiva, unsigned int n) {
     
     tyhjenna();
     piirraVari(viiva.vari);
-    //std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
     
     std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
     std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
     
-    if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
-        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää: " << sumeudet.size() << "/" << paksuudet.size() << "\n";
+    //todo: jos tämän siirtäisi Viivaan?
+    if(paksuudet.size() != viiva.pisteet.size() || sumeudet.size() != viiva.pisteet.size()) {
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
         return;
     }
 
@@ -398,8 +402,8 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
     if(pensselit.size() < viivat.size() ) {
         luoPensselit(viivat.size() );
     }
-    else
-        tyhjenna();
+    
+    tyhjenna();
     
     //haetaan paksuudet ja sumeudet valmiiksi:
     std::vector< std::vector<float> > paksuudet(viivat.size());
@@ -411,7 +415,7 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
         sumeudet[viiva_i] = viivat[viiva_i].haeArvot(&viivat[viiva_i].sumeus);        
 
         if(paksuudet[viiva_i].size() != viivat[viiva_i].pisteet.size() || sumeudet[viiva_i].size() != viivat[viiva_i].pisteet.size()) {
-//            std::cerr << "Multimonitori::piirraViivatAlusta: vektorien koko ei täsmää\n";
+            std::cerr << "Multimonitori::piirraViivatAlusta: vektorien koko ei täsmää\n";
             return;
         }
     }
@@ -420,12 +424,15 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
     for(unsigned int i=0; i<n; i++) {
         //piirretään joka viivasta yksi veto:
         for(unsigned int viiva_i = 0; viiva_i < viivat.size(); viiva_i++) {
+            if(i >= viivat[viiva_i].pisteet.size() )
+                continue;
+            
             float sumeus = sumeudet[viiva_i][i];
 
             //pehmennys ottamalla 8 viimeistä arvoa
-            paksuusSmooths[viiva_i].add(paksuudet[viiva_i][i]);
+            paksuusSmooths[viiva_i].add(paksuudet[viiva_i][i] );
             float paksuus = paksuusSmooths[viiva_i].get();
-
+            
             teeVeto( viivat[viiva_i].pisteet[i].sijainti, viiva_i, paksuus, sumeus, viivat[viiva_i].vari);
         }
     }

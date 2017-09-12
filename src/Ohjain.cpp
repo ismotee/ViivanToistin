@@ -1,12 +1,12 @@
 #include "Ohjain.h"
 
-Ohjain::Ohjain() : hue(0), range(10) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), range(2) {
 
 }
 
 void Ohjain::setup() {
     Arkisto::lataaViivatHakemistosta("viivat/");
-    Multimonitori::setup(15);
+    Multimonitori::setup();
 }
 
 void Ohjain::update() {
@@ -14,8 +14,17 @@ void Ohjain::update() {
 }
 
 void Ohjain::selaa() {
+    //rujo automaatio. TODO: tehdään tämä kunnolla
+    static int n = 0;
+    n++;
+    if(n > 300) 
+        n = 0;    
+
+    
+    //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    Multimonitori::piirraViivatAlusta(kopio,100);
+    Multimonitori::piirraViivatAlusta(kopio, n);
+
 }
 
 void Ohjain::tallenna() {
@@ -30,6 +39,8 @@ void Ohjain::debugDraw(int x, int y) {
     
     ofDrawBitmapString("hue: " + ofToString(hue), x, y + 80);
     ofDrawBitmapString("range: " + ofToString(range), x, y + 100);
+    
+    ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 120);
     
     
     
@@ -49,6 +60,8 @@ void Ohjain::keyPressed(int key) {
             hue = ofWrap(++hue, 0, 256);
         if (key == OF_KEY_LEFT)
             hue = ofWrap(--hue, 0, 256);
+        if (key == 'r')
+            hue = ofRandom(256);
 
         Arkisto::valikoiHuenMukaan(hue, range);
     }

@@ -1,11 +1,12 @@
 #include "Viiva.h"
 
 class smooth{
+    int add_i = 0;
 public:
     std::vector<float> values;
     float get();
     void add(float);
-    unsigned int max_size = 6;
+    unsigned int max_size = 10;
 };
 
 
@@ -17,7 +18,7 @@ public:
     
     float koko = 10;
     float blur = 0.1;
-    float spacing = 0.4; // suhteena pensselin koosta. huom: vaikuttaa sumennukseen olennaisesti!
+    float spacing = 0.2; // suhteena pensselin koosta. huom: vaikuttaa sumennukseen olennaisesti! oli 0.4
     static ofColor clearColor;
     ofColor vari = ofColor::lightPink;
 
@@ -52,7 +53,6 @@ public:
     void piirraViiva(const Viiva&);
     void piirraKokoViiva(const Viiva&);
     void piirraViivaAlusta(const Viiva&, unsigned int n);
-    void piirraViivatAlusta(const std::vector< Viiva>&, unsigned int n);
     void piirraVari(ofColor vari_);
     void tyhjenna();
     
@@ -65,10 +65,11 @@ public:
 
 
 class Multimonitori {
+
+public:
     std::vector<pensseli> pensselit;
     ofFbo viivaFbo;
 
-public:
     ofColor taustaVari = ofColor::black;    
     
     void teeVeto(ofPoint kohde, unsigned int pensseli_i, float paksuus, float sumeus, ofColor vari);

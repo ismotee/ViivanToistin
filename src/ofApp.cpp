@@ -1,9 +1,18 @@
 #include "ofApp.h"
 
+
+std::string getFilename() {
+    //hae uuden framen kuvatiedoston nimi. huom: ei tarkisteta mitenkään meneekö vanhan päälle
+    static int n = 0;
+    string result = "frames/frame"+ofToString(n)+".png";
+    n++;
+    return result;
+}
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofBackground(ofColor::black);
-    
+    ofBackground(ofColor::black);    
     Ohjain::setup();
 }
 
@@ -15,7 +24,16 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     Multimonitori::draw();
+    
+    //kuvan tallennus:
+    /*
+    ofImage screenshot;
+    screenshot.grabScreen(0,0,ofGetWidth(), ofGetHeight() );
+    screenshot.save(getFilename() );
+     */
+    
     Ohjain::debugDraw(20,20);
+
 }
 
 //--------------------------------------------------------------

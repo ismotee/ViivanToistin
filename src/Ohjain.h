@@ -4,7 +4,7 @@
 #include "Arkisto.h"
 #include "Monitori.h"
 
-struct Ohjain:public Tilat, public Arkisto,public Monitori {
+struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     
     float hue, range;
     

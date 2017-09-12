@@ -14,8 +14,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    Monitori::draw();
-
+    Multimonitori::draw();
     Ohjain::debugDraw(20,20);
 }
 

@@ -411,7 +411,7 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
         sumeudet[viiva_i] = viivat[viiva_i].haeArvot(&viivat[viiva_i].sumeus);        
 
         if(paksuudet[viiva_i].size() != viivat[viiva_i].pisteet.size() || sumeudet[viiva_i].size() != viivat[viiva_i].pisteet.size()) {
-            std::cerr << "Multimonitori::piirraViivatAlusta: vektorien koko ei täsmää\n";
+//            std::cerr << "Multimonitori::piirraViivatAlusta: vektorien koko ei täsmää\n";
             return;
         }
     }

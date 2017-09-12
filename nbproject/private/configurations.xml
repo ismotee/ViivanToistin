@@ -3,6 +3,10 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="bin">
+        <df name="data">
+          <df name="viivat">
+          </df>
+        </df>
         <df name="libs">
         </df>
       </df>
@@ -15,8 +19,16 @@
         </df>
       </df>
       <df name="src">
+        <in>Arkisto.cpp</in>
+        <in>Arkisto.h</in>
         <in>Monitori.cpp</in>
         <in>Monitori.h</in>
+        <in>Ohjain.cpp</in>
+        <in>Ohjain.h</in>
+        <in>Tilat.cpp</in>
+        <in>Tilat.h</in>
+        <in>Viiva.cpp</in>
+        <in>Viiva.h</in>
         <in>main.cpp</in>
         <in>ofApp.cpp</in>
         <in>ofApp.h</in>
@@ -36,13 +48,13 @@
       </toolsSet>
       <compile>
         <compiledirpicklist>
-          <compiledirpicklistitem>.</compiledirpicklistitem>
           <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
         </compiledirpicklist>
         <compiledir>${AUTO_FOLDER}</compiledir>
         <compilecommandpicklist>
-          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
           <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
         </compilecommandpicklist>
         <compilecommand>${AUTO_COMPILE}</compilecommand>
       </compile>
@@ -66,7 +78,7 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
         </runcommandpicklist>
         <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir>.</rundir>
+        <rundir></rundir>
         <buildfirst>false</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>

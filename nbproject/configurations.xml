@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="ofxOsc"
+                   displayName="ofxOsc"
+                   projectFiles="true"
+                   root="../../../addons/ofxOsc">
+      <logicalFolder name="libs" displayName="libs" projectFiles="true">
+        <logicalFolder name="oscpack" displayName="oscpack" projectFiles="true">
+          <logicalFolder name="src" displayName="src" projectFiles="true">
+            <logicalFolder name="ip" displayName="ip" projectFiles="true">
+              <logicalFolder name="posix" displayName="posix" projectFiles="true">
+                <itemPath>../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp</itemPath>
+                <itemPath>../../../addons/ofxOsc/libs/oscpack/src/ip/posix/UdpSocket.cpp</itemPath>
+              </logicalFolder>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.cpp</itemPath>
+            </logicalFolder>
+            <logicalFolder name="osc" displayName="osc" projectFiles="true">
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h</itemPath>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp</itemPath>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.cpp</itemPath>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.h</itemPath>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp</itemPath>
+              <itemPath>../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <itemPath>../../../addons/ofxOsc/src/ofxOscBundle.cpp</itemPath>
+        <itemPath>../../../addons/ofxOsc/src/ofxOscMessage.cpp</itemPath>
+        <itemPath>../../../addons/ofxOsc/src/ofxOscParameterSync.cpp</itemPath>
+        <itemPath>../../../addons/ofxOsc/src/ofxOscParameterSync.h</itemPath>
+        <itemPath>../../../addons/ofxOsc/src/ofxOscReceiver.cpp</itemPath>
+        <itemPath>../../../addons/ofxOsc/src/ofxOscSender.cpp</itemPath>
+      </logicalFolder>
+    </logicalFolder>
     <df root="." name="0">
       <df name="src">
+        <in>Arkisto.cpp</in>
+        <in>Monitori.cpp</in>
+        <in>Ohjain.cpp</in>
+        <in>Tilat.cpp</in>
+        <in>Viiva.cpp</in>
         <in>main.cpp</in>
         <in>ofApp.cpp</in>
+        <in>tiedosto.cpp</in>
+        <in>tilastot.cpp</in>
       </df>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -83,10 +124,6 @@
               <pElem>../../../libs/openFrameworks/sound</pElem>
               <pElem>../../../libs/openFrameworks/events</pElem>
               <pElem>../../../libs/openFrameworks/gl</pElem>
-              <pElem>src</pElem>
-              <pElem>nbproject</pElem>
-              <pElem>nbproject/private</pElem>
-              <pElem>.</pElem>
             </incDir>
             <preprocessorList>
               <Elem>GCC_HAS_REGEX</Elem>
@@ -100,11 +137,156 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/ip/posix/UdpSocket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/src/ofxOscBundle.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/src/ofxOscMessage.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/src/ofxOscParameterSync.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/src/ofxOscReceiver.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../../../addons/ofxOsc/src/ofxOscSender.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <folder path="0">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>nbproject</pElem>
+            <pElem>nbproject/private</pElem>
+            <pElem>../../../addons/ofxOsc/src</pElem>
+            <pElem>../../../addons/ofxOsc/libs</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip/posix</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip/win32</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/osc</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="ofxOsc">
+        <ccTool>
+          <incDir>
+            <pElem>../../../addons/ofxOsc/src</pElem>
+            <pElem>../../../addons/ofxOsc/libs</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip/posix</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/ip/win32</pElem>
+            <pElem>../../../addons/ofxOsc/libs/oscpack/src/osc</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="src/Arkisto.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/Monitori.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/Ohjain.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/Tilat.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/Viiva.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/ofApp.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/tiedosto.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/tilastot.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
       </item>

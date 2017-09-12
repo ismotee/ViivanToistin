@@ -11,14 +11,14 @@ public:
 
 class pensseli{
 public:
-    const int MAX_KOKO = 300;
+    static const int MAX_KOKO = 300;
     
     bool viivaJatkuu = false;
     
     float koko = 10;
     float blur = 0.1;
     float spacing = 0.4; // suhteena pensselin koosta. huom: vaikuttaa sumennukseen olennaisesti!
-    const ofColor clearColor = ofColor(100, 100, 100, 0);
+    static ofColor clearColor;
     ofColor vari = ofColor::lightPink;
 
     ofPoint sijainti;
@@ -36,7 +36,7 @@ public:
 
 class Monitori : public pensseli {
 public:
-    ofColor taustaVari = ofColor::grey;
+    ofColor taustaVari = ofColor::black;
     ofFbo viivaFbo;
     
     float viivanAlfa = 0;
@@ -46,6 +46,8 @@ public:
     
     void setup();
     void draw();
+    
+    void teeVeto(ofPoint kohde, float paksuus, float sumeus);
     
     void piirraViiva(const Viiva&);
     void piirraKokoViiva(const Viiva&);
@@ -59,4 +61,24 @@ public:
     
     void tallennaKuvana(std::string filename = "kuvat/default.png");
     void tallennaKartta(const std::vector<Viiva>& viivat, std::string filename = "kuvat/kartta.png");
+};
+
+
+class Multimonitori {
+    std::vector<pensseli> pensselit;
+    ofFbo viivaFbo;
+
+public:
+    ofColor taustaVari = ofColor::black;    
+    
+    void teeVeto(ofPoint kohde, unsigned int pensseli_i, float paksuus, float sumeus, ofColor vari);
+
+    void setup(unsigned int pensseli_n = 0);
+    void luoPensselit(unsigned int n);
+    void draw();
+
+    void piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigned int n);
+
+    void tyhjenna();
+    void tallennaKuvana(std::string filename = "kuvat/default.png");
 };

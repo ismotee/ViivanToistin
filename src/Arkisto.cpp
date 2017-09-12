@@ -10,7 +10,6 @@ bool Arkisto::lataaViivatHakemistosta(std::string polku) {
 
     dir.listDir();
 
-
     for (int i = 0; i < dir.size(); i++)
         kaikki.push_back(tiedosto::lataaViiva(dir[i].getAbsolutePath()));
 
@@ -22,8 +21,11 @@ const std::vector<Viiva>& Arkisto::haeValikoidut() const {
 
 void Arkisto::valikoiHuenMukaan(float hue, float range) {
     valikoidut.clear();
+
     for (Viiva& viiva : kaikki) {
-        if (viiva.vari.getHue() > ofWrap(hue - range,0, 256) && viiva.vari.getHue() < ofWrap(hue + range,0,256))
+
+        if (abs(viiva.vari.getHue() - hue) < range || abs(255 + viiva.vari.getHue() - hue) < range || abs(255 - viiva.vari.getHue() - hue) < range)
             valikoidut.push_back(viiva);
     }
+
 }

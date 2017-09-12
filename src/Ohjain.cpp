@@ -40,9 +40,9 @@ void Ohjain::keyPressed(int key) {
         if (key == '1')
             Arkisto::valikoiHuenMukaan(hue, range);
         if (key == OF_KEY_DOWN)
-            range = ofClamp(range -= 0.1, 0, 100);
+            range = ofClamp(range -= 0.1, 0, 127);
         if (key == OF_KEY_UP)
-            range = ofClamp(range += 0.1, 0, 100);
+            range = ofClamp(range += 0.1, 0, 127);
         if (key == OF_KEY_RIGHT)
             hue = ofWrap(++hue, 0, 256);
         if (key == OF_KEY_LEFT)

@@ -129,8 +129,8 @@ ofVec2f Viiva::paksuusSumeusVektori() {
 
 vector<float> Viiva::haeArvot(const vector<ViivanOminaisuus>* const ominaisuus) const {
     //tarkistetaan että osoite on validi
-    if (ominaisuus != &paksuus || ominaisuus != &sumeus)
-        return vector<float>(0);
+ //   if (ominaisuus != &paksuus || ominaisuus != &sumeus)
+ //       return vector<float>(0);
 
     vector<float> arvot;
     arvot.resize(ominaisuus->size(), 0);

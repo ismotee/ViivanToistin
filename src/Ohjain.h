@@ -2,8 +2,9 @@
 #include "ofMain.h"
 #include "Tilat.h"
 #include "Arkisto.h"
+#include "Monitori.h"
 
-struct Ohjain:public Tilat, public Arkisto {
+struct Ohjain:public Tilat, public Arkisto,public Monitori {
     
     float hue, range;
     

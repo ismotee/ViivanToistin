@@ -8,7 +8,7 @@
 Viiva tiedosto::lataaViiva(std::string tiedostonNimi) {
     std::ifstream is(tiedostonNimi, ios::binary | ios::ate | ios::in);
     Viiva viiva;
-    //cout << "tiedoston nimi: " << tiedostonNimi << "\n";
+    cout << "tiedoston nimi: " << tiedostonNimi << "\n";
 
     if (is.is_open()) {
 
@@ -64,7 +64,7 @@ Viiva tiedosto::lataaViiva(std::string tiedostonNimi) {
             viiva.sumeus.push_back(sumeus);
         }
 
-        //std::cout << "ladattiin viiva\n";
+        std::cout << "ladattiin viiva\n";
 
         is.close();
 

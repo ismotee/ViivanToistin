@@ -50,7 +50,7 @@ public:
     void piirraViiva(const Viiva&);
     void piirraKokoViiva(const Viiva&);
     void piirraViivaAlusta(const Viiva&, unsigned int n);
-    void piirraViivatAlusta(std::vector<const Viiva&>, unsigned int n);
+    void piirraViivatAlusta(const std::vector< Viiva>&, unsigned int n);
     void piirraVari(ofColor vari_);
     void tyhjenna();
     

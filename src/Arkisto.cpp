@@ -1,6 +1,7 @@
 #include "Arkisto.h"
 
 bool Arkisto::lataaViivatHakemistosta(std::string polku) {
+    kaikki.clear();
     ofDirectory dir(polku);
     if (!dir.exists()) {
         cout << "yritettiin ladata " << dir.getAbsolutePath() << "\n";
@@ -13,6 +14,7 @@ bool Arkisto::lataaViivatHakemistosta(std::string polku) {
     for (int i = 0; i < dir.size(); i++)
         kaikki.push_back(tiedosto::lataaViiva(dir[i].getAbsolutePath()));
 
+    cout << kaikki.back().paksuus[0].arvo << '\n';
 }
 
 const std::vector<Viiva>& Arkisto::haeValikoidut() const {

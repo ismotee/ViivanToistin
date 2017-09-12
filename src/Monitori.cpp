@@ -181,13 +181,13 @@ void Monitori::piirraKokoViiva(const Viiva& viiva) {
     
     tyhjenna();
     piirraVari(viiva.vari);
-    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+   // std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
     
     std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
     std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
     
     if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
-        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n" << sumeudet.size() << "/" << paksuudet.size() << "/" << viiva.pisteet.size() << '\n';
         return;
     }
 
@@ -235,13 +235,13 @@ void Monitori::piirraViivaAlusta(const Viiva& viiva, unsigned int n) {
     
     tyhjenna();
     piirraVari(viiva.vari);
-    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+    //std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
     
     std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
     std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
     
     if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
-        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää: " << sumeudet.size() << "/" << paksuudet.size() << "\n";
         return;
     }
 

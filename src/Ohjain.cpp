@@ -6,6 +6,7 @@ Ohjain::Ohjain() : hue(0), range(10) {
 
 void Ohjain::setup() {
     Arkisto::lataaViivatHakemistosta("viivat/");
+    Monitori::setup();
 }
 
 void Ohjain::update() {
@@ -13,7 +14,9 @@ void Ohjain::update() {
 }
 
 void Ohjain::selaa() {
-
+    vector<Viiva> kopio = Arkisto::haeValikoidut();
+    for(const Viiva& viiva : kopio)
+        Monitori::piirraViivaAlusta(viiva, 100);
 }
 
 void Ohjain::tallenna() {
@@ -47,6 +50,8 @@ void Ohjain::keyPressed(int key) {
             hue = ofWrap(++hue, 0, 256);
         if (key == OF_KEY_LEFT)
             hue = ofWrap(--hue, 0, 256);
+        if(key == OF_KEY_TAB)
+            Monitori::paljasta();
 
         Arkisto::valikoiHuenMukaan(hue, range);
     }

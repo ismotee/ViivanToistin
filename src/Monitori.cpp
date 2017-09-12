@@ -1,6 +1,28 @@
 #include "Monitori.h"
 #include "tilastot.h"
 
+void smooth::add(float newValue) {
+    static int add_i = 0;
+    
+    if(values.size() == max_size) {
+        values[add_i] = newValue;
+        add_i++;
+        if(add_i >= max_size) 
+            add_i = 0;
+    }
+    else if (values.size() < max_size) {
+        values.push_back(newValue);
+    }
+    else if (values.size() > max_size)
+        values.resize(max_size);
+}
+
+
+float smooth::get() {
+    return keskiarvo(values);
+}
+
+
 void pensseli::setup() {
     brushFbo.allocate(MAX_KOKO, MAX_KOKO, GL_RGBA);
     brushFbo.begin();
@@ -126,8 +148,6 @@ void Monitori::piirraViiva(const Viiva& viiva) {
 
     //sumeus on 0...1
     float sumeus = viiva.haeViimeisinSumeus().arvo;
-    //pehmennetään ottamalla 8 viimeistä arvoa
-    //float sumeus = keskiarvo(viiva.haeArvot(&viiva.sumeus, 8) );
     
     //jos sumeus on täysi, ei piirretä mitään
     if(sumeus == 1) {
@@ -136,7 +156,7 @@ void Monitori::piirraViiva(const Viiva& viiva) {
     }    
     
     //paksuus on 0...1
-    //pehmennetään ottamalla 8 viimeistä arvoa
+    //pehmennetään ottamalla 6 viimeistä arvoa
     float paksuus = keskiarvo(viiva.haeArvot(&viiva.paksuus, 6) );
     
     // blur: 0...16
@@ -149,6 +169,59 @@ void Monitori::piirraViiva(const Viiva& viiva) {
         ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         pensseli::strokeTo( viiva.pisteet.back().sijainti );
     viivaFbo.end();
+}
+
+
+void Monitori::piirraKokoViiva(const Viiva& viiva) {
+    if(viiva.pisteet.empty() ) {
+        return;
+    }
+    
+    smooth paksuusSmooth;
+    
+    tyhjenna();
+    piirraVari(viiva.vari);
+    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+    
+    std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
+    std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
+    
+    if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
+        return;
+    }
+
+    viivaFbo.begin();
+    
+    for(unsigned int i=0; i<viiva.pisteet.size(); i++) {
+        //sumeus on 0...1
+        float sumeus = sumeudet[i];
+
+        //jos sumeus on täysi, ei piirretä mitään
+        if(sumeus == 1) {
+            pensseli::moveTo(viiva.pisteet[i].sijainti);
+            continue;
+        }
+
+        //paksuus on 0...1
+        //todo: pehmennys ottamalla 8 viimeistä arvoa
+        paksuusSmooth.add(paksuudet[i]);
+        float paksuus = paksuusSmooth.get();
+
+        // blur: 0...16
+        pensseli::blur = ofClamp(pow(sumeus, 2) * 16, 0.1, 16);
+
+        // koko: 0 ... MAX_KOKO/(4+2/3)
+        pensseli::koko = ofClamp(pow(paksuus, 0.7) * MAX_KOKO / (4+2/3), 1, MAX_KOKO / (4+2/3) );
+
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        pensseli::strokeTo( viiva.pisteet[i].sijainti );
+    }
+    viivaFbo.end();
+}
+
+
+void Monitori::piirraViivaAlusta(const Viiva& viiva, unsigned int n) {
 }
 
 
@@ -185,4 +258,45 @@ void Monitori::tallennaKuvana(std::string tiedosto) {
     ofPixels px;
     viivaFbo.readToPixels(px);
     ofSaveImage(px, tiedosto);
+}
+
+
+void Monitori::tallennaKartta(const std::vector<Viiva>& viivat, std::string filename) {
+    if(viivat.empty() ) {
+        std::cerr << "Monitori::tallennaKartta: Ei viivoja!\n";
+        return;
+    }
+    
+    //luodaan kartta omaan fbo:oon
+    ofFbo karttaFbo;
+    int w = ofGetWidth() * 5;
+    int h = ofGetHeight() * 5;
+    karttaFbo.allocate(w + ofGetWidth(), h + ofGetHeight(), GL_RGBA);
+    karttaFbo.begin();
+    //taustavärinä sama kuin blurrin reunat
+    ofClear(pensseli::clearColor);
+    
+    std::cerr << "kartan koko: " << w << " x " << h << "\n";
+    std::cout << "max: " << GL_MAX_FRAMEBUFFER_WIDTH << " x " << GL_MAX_FRAMEBUFFER_HEIGHT << "\n";
+    
+    //piirretään viivat karttaan
+    for(unsigned int i=0; i<viivat.size(); i++) {
+        piirraKokoViiva(viivat[i]);
+        float x = viivat[i].haeViimeisinPaksuus().keskiarvo * w;
+        float y = (1 - viivat[i].haeViimeisinSumeus().keskiarvo) * h;
+        std::cerr << "piirretään karttaan (" << x << ", " << y << ")\n";
+        ofPushMatrix();
+            ofScale(0.5, 0.5);
+            viivaFbo.draw(2*x, 2*y);
+        ofPopMatrix();
+        //ofDrawBitmapStringHighlight(ofToString(viivat[i].haeViimeisinSumeus().arvo), x, y, ofColor::white, ofColor::black);
+        //ofSetColor(viivat[i].vari);
+        //ofDrawCircle(x,y,10);
+    }
+    
+    karttaFbo.end();
+    
+    ofPixels px;
+    karttaFbo.readToPixels(px);
+    ofSaveImage(px, filename);    
 }

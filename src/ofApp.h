@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Ohjain.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp, public Ohjain{
 	public:
 		void setup();
 		void update();

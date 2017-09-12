@@ -6,9 +6,18 @@ enum Tila {Selaa, Tallenna};
 struct Tilat {
     Tila tila;
     
-    void update() {switch(tila){case Selaa:selaa();break;case Tallenna:tallenna();break;}}
+    Tilat();
+    
+    void update();
+    void keyPressed(int key);
+    
     
     virtual void selaa() = 0;
     virtual void tallenna() = 0;
+    
+    void vaihdaTilaa();
+    
+    void debugDraw(int x, int y);
+    
     
 };

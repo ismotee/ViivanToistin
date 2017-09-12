@@ -222,6 +222,56 @@ void Monitori::piirraKokoViiva(const Viiva& viiva) {
 
 
 void Monitori::piirraViivaAlusta(const Viiva& viiva, unsigned int n) {
+    if(viiva.pisteet.empty() ) {
+        return;
+    }
+    
+    if(n >= viiva.pisteet.size() ) {
+        piirraKokoViiva();
+        return;
+    }
+    
+    smooth paksuusSmooth;
+    
+    tyhjenna();
+    piirraVari(viiva.vari);
+    std::cout << "väri: " << (int)viiva.vari.r << ", " << (int)viiva.vari.g << ", " << (int)viiva.vari.b << "\n";
+    
+    std::vector<float> sumeudet = viiva.haeArvot(&viiva.sumeus);
+    std::vector<float> paksuudet = viiva.haeArvot(&viiva.paksuus);
+    
+    if(sumeudet.size() != viiva.pisteet.size() || paksuudet.size() != viiva.pisteet.size() ) {
+        std::cerr << "Monitori::piirraKokoViiva: vektorien koko ei täsmää\n";
+        return;
+    }
+
+    viivaFbo.begin();
+    
+    for(unsigned int i=0; i<n; i++) {
+        //sumeus on 0...1
+        float sumeus = sumeudet[i];
+
+        //jos sumeus on täysi, ei piirretä mitään
+        if(sumeus == 1) {
+            pensseli::moveTo(viiva.pisteet[i].sijainti);
+            continue;
+        }
+
+        //paksuus on 0...1
+        //todo: pehmennys ottamalla 8 viimeistä arvoa
+        paksuusSmooth.add(paksuudet[i]);
+        float paksuus = paksuusSmooth.get();
+
+        // blur: 0...16
+        pensseli::blur = ofClamp(pow(sumeus, 2) * 16, 0.1, 16);
+
+        // koko: 0 ... MAX_KOKO/(4+2/3)
+        pensseli::koko = ofClamp(pow(paksuus, 0.7) * MAX_KOKO / (4+2/3), 1, MAX_KOKO / (4+2/3) );
+
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        pensseli::strokeTo( viiva.pisteet[i].sijainti );
+    }
+    viivaFbo.end();
 }
 
 

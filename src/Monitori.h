@@ -1,5 +1,14 @@
 #include "Viiva.h"
 
+class smooth{
+public:
+    std::vector<float> values;
+    float get();
+    void add(float);
+    unsigned int max_size = 6;
+};
+
+
 class pensseli{
 public:
     const int MAX_KOKO = 300;
@@ -39,6 +48,9 @@ public:
     void draw();
     
     void piirraViiva(const Viiva&);
+    void piirraKokoViiva(const Viiva&);
+    void piirraViivaAlusta(const Viiva&, unsigned int n);
+    void piirraViivatAlusta(std::vector<const Viiva&>, unsigned int n);
     void piirraVari(ofColor vari_);
     void tyhjenna();
     
@@ -46,4 +58,5 @@ public:
     void piilota();
     
     void tallennaKuvana(std::string filename = "kuvat/default.png");
+    void tallennaKartta(const std::vector<Viiva>& viivat, std::string filename = "kuvat/kartta.png");
 };

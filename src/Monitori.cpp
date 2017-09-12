@@ -227,7 +227,7 @@ void Monitori::piirraViivaAlusta(const Viiva& viiva, unsigned int n) {
     }
     
     if(n >= viiva.pisteet.size() ) {
-        piirraKokoViiva();
+        piirraKokoViiva(viiva);
         return;
     }
     

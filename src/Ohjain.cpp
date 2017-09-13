@@ -74,7 +74,7 @@ void Ohjain::debugDraw(int x, int y) {
     ofDrawBitmapString("brightness range: " + ofToString(brightnessRange), x, y + 180);
     
     ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 200);
-    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 220);
+    ofDrawBitmapString("frame: " + ofToString(frame_n) + " / " + ofToString(Arkisto::valikoitujenMaksimiKoko()), x, y + 220);
     
     ofColor col;
     col = ofColor::white;

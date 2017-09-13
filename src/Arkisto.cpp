@@ -38,19 +38,19 @@ void Arkisto::valikoiVarinMukaan(float hue, float hueRange, float saturation, fl
 
     //hue
     for (int i = 0; i < kaikki.size(); i++) {
-        Viiva& viiva = kaikki[i];
+        Viiva viiva = kaikki[i];
 
         if (hue > hueRange && hue < 255 - hueRange) {
             if (hue - hueRange < viiva.vari.getHue() && viiva.vari.getHue() < hue + hueRange) {
                 valikoidut.push_back(viiva);
             }
         } else if (hue <= hueRange) {
-            if ((hue - hueRange - 255 < viiva.vari.getHue() || hue -hueRange < viiva.vari.getHue() )&& viiva.vari.getHue() < hue + hueRange) {
+            if (hue - hueRange - 255 < viiva.vari.getHue()&& viiva.vari.getHue() < hue + hueRange) {
                 valikoidut.push_back(viiva);
             }
         } else if (hue >= 255 - hueRange) {
-            if (hue - hueRange < viiva.vari.getHue() && (viiva.vari.getHue() < hue + hueRange+255 || viiva.vari.getHue() < hue + hueRange))
-                cout << viiva.vari.getHue() << '\n';
+            if (hue - hueRange < viiva.vari.getHue() || viiva.vari.getHue() < hue + hueRange - 255)
+              //  cout << viiva.vari.getHue() << '\n';
                 valikoidut.push_back(viiva);
         }
     }

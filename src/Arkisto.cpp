@@ -39,36 +39,43 @@ void Arkisto::valikoiVarinMukaan(float hue, float hueRange, float saturation, fl
     //hue
     for (int i = 0; i < kaikki.size(); i++) {
         Viiva& viiva = kaikki[i];
-        if (abs(viiva.vari.getHue() - hue) < hueRange || abs(255 + viiva.vari.getHue() - hue) < hueRange || abs(255 - viiva.vari.getHue() - hue) < hueRange)
-            valikoidutId.push_back(i);
+
+        if (hue > hueRange && hue < 255 - hueRange) {
+            if (hue - hueRange < viiva.vari.getHue() && viiva.vari.getHue() < hue + hueRange) {
+                valikoidut.push_back(viiva);
+            }
+        } else if (hue <= hueRange) {
+            if (hue - hueRange - 255 < viiva.vari.getHue() && viiva.vari.getHue() < hue + hueRange) {
+                valikoidut.push_back(viiva);
+            }
+        } else if (hue >= 255 - hueRange) {
+            if (hue - hueRange < viiva.vari.getHue() && viiva.vari.getHue() < hue + hueRange+255)
+                valikoidut.push_back(viiva);
+        }
     }
     //saturaatio
-    for (int i = 0; i < kaikki.size(); i++) {
-        
-        // etsitään onko indeksi jo lisätty
-        vector<int>::iterator it = std::find(valikoidutId.begin(), valikoidutId.end(), i);
-        if (it == valikoidutId.end()) {
+    for (int i = 0; i < valikoidut.size(); i++) {
 
-            if (abs(kaikki[i].vari.getSaturation() - saturation) < satRange)
-                valikoidutId.push_back(i);
-        }
+            if (abs(valikoidut[i].vari.getSaturation() - saturation) > satRange) {
+                valikoidut.erase(valikoidut.begin() + i);
+                // koska poistettiin niin iteroidaan sama indeksi
+                i--;
+            }
     }
     //brightness
-    for (int i = 0; i < kaikki.size(); i++) {
-        
-        // etsitään onko indeksi jo lisätty
-        vector<int>::iterator it = std::find(valikoidutId.begin(), valikoidutId.end(), i);
-        if (it == valikoidutId.end()) {
+    for (int i = 0; i < valikoidut.size(); i++) {
 
-            if (abs(kaikki[i].vari.getBrightness() - brightness) < brightRange)
-                valikoidutId.push_back(i);
+            if (abs(kaikki[i].vari.getBrightness() - brightness) > brightRange) {
+                valikoidut.erase(valikoidut.begin()+i);
+                // koska poistettiin niin iteroidaan sama indeksi
+                i--;
         }
     }
-    
-    for(int i : valikoidutId) {
+
+    for (int i : valikoidutId) {
         valikoidut.push_back(kaikki[i]);
     }
-    
+
 
 }
 

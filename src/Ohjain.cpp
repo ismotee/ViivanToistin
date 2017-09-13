@@ -10,7 +10,7 @@ std::string getFrameFilename() {
 }
 
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(1) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(127), saturation(127),saturationRange(127),brightness(127), brightnessRange(127) {
 
 }
 

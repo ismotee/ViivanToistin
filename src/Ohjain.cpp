@@ -1,28 +1,12 @@
 #include "Ohjain.h"
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), range(1) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), range(2) {
 
-}
-
-
-void Ohjain::nextFrame() {
-    frame_n++;
-    if(frame_n >= Arkisto::valikoitujenMaksimiKoko()) 
-        frame_n = 0;
-}
-
-
-void Ohjain::reset() {
-    Arkisto::valikoiHuenMukaan(hue, range);
-    frame_n = 0;    
 }
 
 void Ohjain::setup() {
     Arkisto::lataaViivatHakemistosta("viivat/");
     Multimonitori::setup();
-    
-    //päivitä valikoima:
-    reset();
 }
 
 void Ohjain::update() {
@@ -30,15 +14,21 @@ void Ohjain::update() {
 }
 
 void Ohjain::selaa() {
+    //rujo automaatio. TODO: tehdään tämä kunnolla
+    static int n = 0;
+    n++;
+    if(n > Arkisto::valikoitujenMaksimiKoko()) 
+        n = 0;    
+
+    
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    Multimonitori::piirraViivatAlusta(kopio, frame_n);
-        
-    nextFrame();
+    Multimonitori::piirraViivatAlusta(kopio, n);
+
 }
 
 void Ohjain::tallenna() {
-    //TODO: kuvan tallennus tähän ja pois ofAppista
+
 }
 
 void Ohjain::debugDraw(int x, int y) {
@@ -51,29 +41,28 @@ void Ohjain::debugDraw(int x, int y) {
     ofDrawBitmapString("range: " + ofToString(range), x, y + 100);
     
     ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 120);
-    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 140);
+    
+    
+    
 }
 
 void Ohjain::keyPressed(int key) {
     Tilat::keyPressed(key);
 
     if (Tilat::tila == Selaa) {
+        if (key == '1')
+            Arkisto::valikoiHuenMukaan(hue, range);
         if (key == OF_KEY_DOWN)
             range = ofClamp(range -= 0.1, 0, 127);
-        else if (key == OF_KEY_UP)
+        if (key == OF_KEY_UP)
             range = ofClamp(range += 0.1, 0, 127);
-        else if (key == OF_KEY_RIGHT)
+        if (key == OF_KEY_RIGHT)
             hue = ofWrap(++hue, 0, 256);
-        else if (key == OF_KEY_LEFT)
+        if (key == OF_KEY_LEFT)
             hue = ofWrap(--hue, 0, 256);
-        else if (key == 'r')
+        if (key == 'r')
             hue = ofRandom(256);
-        else if (key == '1')
-            ;
-        else
-            return;
-        
-        //päivitä valikoima ja aloita piirto alusta, jos jotain näppäimistä painettiin:
-        reset();
+
+        Arkisto::valikoiHuenMukaan(hue, range);
     }
 }

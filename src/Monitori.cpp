@@ -21,10 +21,12 @@ float smooth::get() {
 }
 
 
-ofColor pensseli::clearColor = ofColor(100, 100, 100, 0);
+ofColor pensseli::clearColor = ofColor(0, 0, 0, 0);
+
 
 void pensseli::setup() {
     brushFbo.allocate(MAX_KOKO, MAX_KOKO, GL_RGBA);
+    pensseli::clearColor = ofColor(0,0,0,0);
     brushFbo.begin();
         ofClear(clearColor);
     brushFbo.end();
@@ -38,11 +40,11 @@ void pensseli::drawBrush() {
     ofPoint P(MAX_KOKO/2, MAX_KOKO/2);
     
     brushFbo.begin();
-        ofClear(clearColor);
+        ofClear(ofColor(255,255,255, 0));
         
         //piirretään valkoisella brush läpinäkyvälle. Stroken piirrossa käytetään värimodulointia
         ofEnableBlendMode(OF_BLENDMODE_ADD);
-        int alpha = 3.2 * 256 / blur_steps; //oli: 2.6
+        int alpha = 2.9 * 256 / blur_steps; //oli: 2.6
         ofSetColor(255,255,255, alpha);
         
         for(unsigned int blur_i = 0; blur_i < blur_steps; blur_i++) {
@@ -115,6 +117,7 @@ void Monitori::setup() {
     pensseli::setup();
     //alusta viivaFbo
     viivaFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    pensseli::clearColor = ofColor(0,0,0,0);
     viivaFbo.begin();
         ofClear(pensseli::clearColor);
     viivaFbo.end();
@@ -265,6 +268,7 @@ void Monitori::piirraVari(ofColor vari_) {
 
 
 void Monitori::tyhjenna() {
+    pensseli::clearColor = ofColor(0,0,0,0);
     viivaFbo.begin();
         ofClear(pensseli::clearColor);
     viivaFbo.end();
@@ -353,7 +357,6 @@ void Multimonitori::teeVeto(ofPoint kohde, unsigned int pensseli_i, float paksuu
     pensselit[pensseli_i].vari = vari;
     
     viivaFbo.begin();
-        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
         pensselit[pensseli_i].strokeTo( kohde );
     viivaFbo.end();
 }
@@ -387,14 +390,15 @@ void Multimonitori::luoPensselit(unsigned int n) {
 
 
 void Multimonitori::draw() {
-    ofClear(taustaVari);    
-    ofSetColor(ofColor::white);    
+    ofClear(taustaVari);
+    ofSetColor(ofColor::white);
     viivaFbo.draw(0,0);
 }
 
 
 void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigned int n) {
     tyhjenna();
+
     if(viivat.empty() ) {
         return;
     }
@@ -403,8 +407,7 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
     if(pensselit.size() < viivat.size() ) {
         luoPensselit(viivat.size() );
     }
-    
-    
+        
     //haetaan paksuudet ja sumeudet valmiiksi:
     std::vector< std::vector<float> > paksuudet(viivat.size());
     std::vector< std::vector<float> > sumeudet(viivat.size());
@@ -443,6 +446,7 @@ void Multimonitori::tallennaKuvana(std::string filename) {}
 
 
 void Multimonitori::tyhjenna() {
+    pensseli::clearColor = ofColor(0,0,0,0);
     viivaFbo.begin();
         ofClear(pensseli::clearColor);
     viivaFbo.end();

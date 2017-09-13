@@ -4,6 +4,8 @@
     <df root="." name="0">
       <df name="bin">
         <df name="data">
+          <df name="frames">
+          </df>
           <df name="viivat">
           </df>
         </df>

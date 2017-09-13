@@ -1,5 +1,15 @@
 #include "Ohjain.h"
 
+
+std::string getFrameFilename() {
+    //hae uuden framen kuvatiedoston nimi. huom: ei tarkisteta mitenkään meneekö vanhan päälle
+    static int n = 0;
+    string result = "frames/frame"+ofToString(n)+".png";
+    n++;
+    return result;
+}
+
+
 Ohjain::Ohjain() : hue(ofRandom(256) ), range(1) {
 
 }
@@ -38,7 +48,14 @@ void Ohjain::selaa() {
 }
 
 void Ohjain::tallenna() {
-    //TODO: kuvan tallennus tähän ja pois ofAppista
+    //haetaan viivat ja piirretään n pistettä alusta:
+    vector<Viiva> kopio = Arkisto::haeValikoidut();
+    Multimonitori::piirraViivatAlusta(kopio, frame_n);
+    
+    //tallennetaan kuva:
+    Multimonitori::tallennaKuvana(getFrameFilename() );
+    
+    nextFrame();
 }
 
 void Ohjain::debugDraw(int x, int y) {

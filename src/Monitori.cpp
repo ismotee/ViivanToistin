@@ -443,7 +443,10 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
 
 
 void Multimonitori::tallennaKuvana(std::string filename) {}
-
+    ofPixels px;
+    viivaFbo.readToPixels(px);
+    ofSaveImage(px, tiedosto);
+}
 
 void Multimonitori::tyhjenna() {
     pensseli::clearColor = ofColor(0,0,0,0);

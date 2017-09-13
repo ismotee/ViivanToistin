@@ -1,15 +1,6 @@
 #include "ofApp.h"
 
 
-std::string getFilename() {
-    //hae uuden framen kuvatiedoston nimi. huom: ei tarkisteta mitenkään meneekö vanhan päälle
-    static int n = 0;
-    string result = "frames/frame"+ofToString(n)+".png";
-    n++;
-    return result;
-}
-
-
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(ofColor::black);    

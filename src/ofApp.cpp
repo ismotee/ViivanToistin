@@ -16,13 +16,6 @@ void ofApp::update(){
 void ofApp::draw(){
     Multimonitori::draw();
     
-    //kuvan tallennus:
-    /*
-    ofImage screenshot;
-    screenshot.grabScreen(0,0,ofGetWidth(), ofGetHeight() );
-    screenshot.save(getFilename() );
-     */
-    
     Ohjain::debugDraw(20,20);
 
 }

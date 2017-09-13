@@ -7,8 +7,11 @@
 struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     
     float hue, range;
+    int frame_n = 0;
     
     Ohjain();
+    void nextFrame();
+    void reset(); //päivittää valikoiman huen ja rangen mukaan sekä aloittaa piirron alusta
     
     void setup();
     void update();

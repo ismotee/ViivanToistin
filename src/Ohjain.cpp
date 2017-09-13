@@ -23,7 +23,7 @@ void Ohjain::nextFrame() {
 
 
 void Ohjain::reset() {
-    Arkisto::valikoiHuenMukaan(hue, range);
+    Arkisto::valikoiVarinMukaan(hue, range, saturation, range, brightness, range);
     frame_n = 0;    
 }
 
@@ -65,24 +65,31 @@ void Ohjain::debugDraw(int x, int y) {
     ofDrawBitmapString("valikoituja: " + ofToString(Arkisto::valikoidut.size()), x, y + 50);
     
     ofDrawBitmapString("hue: " + ofToString(hue), x, y + 80);
-    ofDrawBitmapString("range: " + ofToString(range), x, y + 100);
-    
-    ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 120);
-    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 140);
+    ofDrawBitmapString("saturation: " + ofToString(saturation), x, y + 100);
+    ofDrawBitmapString("brightness: " + ofToString(brightness), x, y + 120);
+    ofDrawBitmapString("range: " + ofToString(range), x, y + 140);
+        
+    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 160);
 }
 
 void Ohjain::keyPressed(int key) {
     Tilat::keyPressed(key);
 
+    if (key == OF_KEY_TAB)
+        Tilat::vaihdaTilaa();
+
     if (Tilat::tila == Selaa) {
+        //nuolinäppäimet muuttavat saturaatiota ja kirkkautta
+        //r arpoo huen
+        //tab vaihtaa moodia
         if (key == OF_KEY_DOWN)
-            range = ofClamp(range -= 0.1, 0, 127);
+            brightness = ofClamp(brightness - 1, 0, 255);
         else if (key == OF_KEY_UP)
-            range = ofClamp(range += 0.1, 0, 127);
+            brightness = ofClamp(brightness + 1, 0, 255);
         else if (key == OF_KEY_RIGHT)
-            hue = ofWrap(++hue, 0, 256);
+            saturation = ofClamp(saturation + 1, 0, 255);
         else if (key == OF_KEY_LEFT)
-            hue = ofWrap(--hue, 0, 256);
+            saturation = ofClamp(saturation - 1, 0, 255);
         else if (key == 'r')
             hue = ofRandom(256);
         else if (key == '1')

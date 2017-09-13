@@ -80,6 +80,9 @@ void Ohjain::debugDraw(int x, int y) {
 void Ohjain::keyPressed(int key) {
     Tilat::keyPressed(key);
 
+    if (key == OF_KEY_TAB)
+        Tilat::vaihdaTilaa();
+
     if (Tilat::tila == Selaa) {
         
         //hue wasd

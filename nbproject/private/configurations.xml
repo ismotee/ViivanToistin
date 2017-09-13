@@ -6,6 +6,18 @@
         <df name="data">
           <df name="frames">
           </df>
+          <df name="videoconvert">
+            <df name="results">
+              <df name="samples">
+              </df>
+              <df name="videos">
+              </df>
+            </df>
+            <df name="source">
+              <df name="frames">
+              </df>
+            </df>
+          </df>
           <df name="viivat">
           </df>
         </df>

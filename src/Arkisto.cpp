@@ -45,7 +45,7 @@ void Arkisto::valikoiVarinMukaan(float hue, float hueRange, float saturation, fl
                 valikoidut.push_back(viiva);
             }
         } else if (hue <= hueRange) {
-            if (hue - hueRange - 255 < viiva.vari.getHue()&& viiva.vari.getHue() < hue + hueRange) {
+            if (hue - hueRange + 255 < viiva.vari.getHue()|| viiva.vari.getHue() < hue + hueRange) {
                 valikoidut.push_back(viiva);
             }
         } else if (hue >= 255 - hueRange) {
@@ -57,7 +57,8 @@ void Arkisto::valikoiVarinMukaan(float hue, float hueRange, float saturation, fl
     //saturaatio
     for (int i = 0; i < valikoidut.size(); i++) {
 
-            if (abs(valikoidut[i].vari.getSaturation() - saturation) > satRange) {
+            if ( valikoidut[i].vari.getSaturation() < (saturation - satRange) || valikoidut[i].vari.getSaturation() >= (satRange+ saturation) ) {
+                cout << saturation - satRange << '\n';
                 valikoidut.erase(valikoidut.begin() + i);
                 // koska poistettiin niin iteroidaan sama indeksi
                 i--;
@@ -66,7 +67,7 @@ void Arkisto::valikoiVarinMukaan(float hue, float hueRange, float saturation, fl
     //brightness
     for (int i = 0; i < valikoidut.size(); i++) {
 
-            if (abs(kaikki[i].vari.getBrightness() - brightness) > brightRange) {
+            if (valikoidut[i].vari.getBrightness() < (brightness -brightRange) || valikoidut[i].vari.getBrightness() > (brightness + brightRange)) {
                 valikoidut.erase(valikoidut.begin()+i);
                 // koska poistettiin niin iteroidaan sama indeksi
                 i--;

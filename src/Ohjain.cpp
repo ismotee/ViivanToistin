@@ -10,7 +10,7 @@ std::string getFrameFilename() {
 }
 
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(127), saturation(127),saturationRange(127),brightness(127), brightnessRange(127) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(128), saturation(128),saturationRange(128),brightness(128), brightnessRange(128) {
 
 }
 
@@ -75,6 +75,17 @@ void Ohjain::debugDraw(int x, int y) {
     
     ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 200);
     ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 220);
+    
+    ofColor col;
+    col = ofColor::white;
+    col.setHsb(ofWrap(hue-hueRange,0,256),ofClamp(saturation-saturationRange,0,255),ofClamp(brightness-brightnessRange,0,255));
+    ofSetColor(col);
+    ofDrawRectangle(0,ofGetHeight()-50,50,50);
+    
+    col.setHsb(ofWrap(hue+hueRange,0,256),ofClamp(saturation+saturationRange,0,255),ofClamp(brightness+brightnessRange,0,255));
+    ofSetColor(col);
+    ofDrawRectangle(50,ofGetHeight()-50,50,50);
+    
 }
 
 void Ohjain::keyPressed(int key) {
@@ -87,9 +98,9 @@ void Ohjain::keyPressed(int key) {
         
         //hue wasd
         if(key =='w')
-            hueRange = ofClamp(hueRange += 0.1,0,127);
+            hueRange = ofClamp(hueRange += 0.1,0,128);
         else if(key =='s')
-            hueRange = ofClamp(hueRange -= 0.1,0,127);
+            hueRange = ofClamp(hueRange -= 0.1,0,128);
         else if(key =='a')
             hue = ofWrap(--hue, 0, 256);
         else if(key =='d')
@@ -97,9 +108,9 @@ void Ohjain::keyPressed(int key) {
 
         //saturation tfgh
         else if(key =='t')
-            saturationRange = ofClamp(saturationRange += 0.1,0,127);
+            saturationRange = ofClamp(saturationRange += 0.1,0,128);
         else if(key =='g')
-            saturationRange = ofClamp(saturationRange -= 0.1,0,127);
+            saturationRange = ofClamp(saturationRange -= 0.1,0,128);
         else if(key =='f')
             saturation = ofWrap(--saturation, 0, 256);
         else if(key =='h')
@@ -107,9 +118,9 @@ void Ohjain::keyPressed(int key) {
 
         //brightness ijkl
         else if(key =='i')
-            brightnessRange = ofClamp(brightnessRange += 0.1,0,127);
+            brightnessRange = ofClamp(brightnessRange += 0.1,0,129);
         else if(key =='k')
-            brightnessRange = ofClamp(brightnessRange -= 0.1,0,127);
+            brightnessRange = ofClamp(brightnessRange -= 0.1,0,129);
         else if(key =='j')
             brightness = ofWrap(--brightness, 0, 256);
         else if(key =='l')

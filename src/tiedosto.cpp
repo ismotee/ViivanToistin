@@ -64,7 +64,7 @@ Viiva tiedosto::lataaViiva(std::string tiedostonNimi) {
             viiva.sumeus.push_back(sumeus);
         }
 
-        std::cout << "ladattiin viiva\n";
+      //  std::cout << "ladattiin viiva\n";
 
         is.close();
 

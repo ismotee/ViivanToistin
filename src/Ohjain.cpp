@@ -17,7 +17,7 @@ void Ohjain::selaa() {
     //rujo automaatio. TODO: tehdään tämä kunnolla
     static int n = 0;
     n++;
-    if(n > 300) 
+    if(n > Arkisto::valikoitujenMaksimiKoko()) 
         n = 0;    
 
     

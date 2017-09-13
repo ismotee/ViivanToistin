@@ -394,6 +394,7 @@ void Multimonitori::draw() {
 
 
 void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigned int n) {
+    tyhjenna();
     if(viivat.empty() ) {
         return;
     }
@@ -403,7 +404,6 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
         luoPensselit(viivat.size() );
     }
     
-    tyhjenna();
     
     //haetaan paksuudet ja sumeudet valmiiksi:
     std::vector< std::vector<float> > paksuudet(viivat.size());

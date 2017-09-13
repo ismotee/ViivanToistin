@@ -14,7 +14,6 @@ bool Arkisto::lataaViivatHakemistosta(std::string polku) {
     for (int i = 0; i < dir.size(); i++)
         kaikki.push_back(tiedosto::lataaViiva(dir[i].getAbsolutePath()));
 
-    cout << kaikki.back().paksuus[0].arvo << '\n';
 }
 
 const std::vector<Viiva>& Arkisto::haeValikoidut() const {
@@ -30,4 +29,12 @@ void Arkisto::valikoiHuenMukaan(float hue, float range) {
             valikoidut.push_back(viiva);
     }
 
+}
+
+int Arkisto::valikoitujenMaksimiKoko() {
+    int max = 0;
+    for(Viiva& v : valikoidut) {
+        if(max < v.pisteet.size())max = v.pisteet.size();
+    }
+    return max;
 }

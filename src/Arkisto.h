@@ -10,4 +10,5 @@ struct Arkisto {
     bool lataaViivatHakemistosta(std::string polku);
     void valikoiHuenMukaan(float hue, float range);
     const std::vector<Viiva>& haeValikoidut() const;
+    int valikoitujenMaksimiKoko();
 };

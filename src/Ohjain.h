@@ -6,7 +6,7 @@
 
 struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     
-    float hue, range;
+    float hue, hueRange,saturation,saturationRange,brightness,brightnessRange;
     int frame_n = 0;
     
     Ohjain();

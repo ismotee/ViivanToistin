@@ -10,7 +10,7 @@ std::string getFrameFilename() {
 }
 
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), range(1) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(1) {
 
 }
 
@@ -23,7 +23,7 @@ void Ohjain::nextFrame() {
 
 
 void Ohjain::reset() {
-    Arkisto::valikoiHuenMukaan(hue, range);
+    Arkisto::valikoiVarinMukaan(hue, hueRange,saturation,saturationRange,brightness,brightnessRange);
     frame_n = 0;    
 }
 
@@ -65,30 +65,55 @@ void Ohjain::debugDraw(int x, int y) {
     ofDrawBitmapString("valikoituja: " + ofToString(Arkisto::valikoidut.size()), x, y + 50);
     
     ofDrawBitmapString("hue: " + ofToString(hue), x, y + 80);
-    ofDrawBitmapString("range: " + ofToString(range), x, y + 100);
+    ofDrawBitmapString("hue range: " + ofToString(hueRange), x, y + 100);
+
+    ofDrawBitmapString("saturation: " + ofToString(saturation), x, y + 120);
+    ofDrawBitmapString("saturation range: " + ofToString(saturationRange), x, y + 140);
+
+    ofDrawBitmapString("brightness: " + ofToString(brightness), x, y + 160);
+    ofDrawBitmapString("brightness range: " + ofToString(brightnessRange), x, y + 180);
     
-    ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 120);
-    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 140);
+    ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 200);
+    ofDrawBitmapString("frame: " + ofToString(frame_n), x, y + 220);
 }
 
 void Ohjain::keyPressed(int key) {
     Tilat::keyPressed(key);
 
     if (Tilat::tila == Selaa) {
-        if (key == OF_KEY_DOWN)
-            range = ofClamp(range -= 0.1, 0, 127);
-        else if (key == OF_KEY_UP)
-            range = ofClamp(range += 0.1, 0, 127);
-        else if (key == OF_KEY_RIGHT)
-            hue = ofWrap(++hue, 0, 256);
-        else if (key == OF_KEY_LEFT)
+        
+        //hue wasd
+        if(key =='w')
+            hueRange = ofClamp(hueRange += 0.1,0,127);
+        else if(key =='s')
+            hueRange = ofClamp(hueRange -= 0.1,0,127);
+        else if(key =='a')
             hue = ofWrap(--hue, 0, 256);
-        else if (key == 'r')
-            hue = ofRandom(256);
-        else if (key == '1')
+        else if(key =='d')
+            hue = ofWrap(++hue, 0, 256);
+
+        //saturation tfgh
+        else if(key =='t')
+            saturationRange = ofClamp(saturationRange += 0.1,0,127);
+        else if(key =='g')
+            saturationRange = ofClamp(saturationRange -= 0.1,0,127);
+        else if(key =='f')
+            saturation = ofWrap(--saturation, 0, 256);
+        else if(key =='h')
+            saturation = ofWrap(++saturation, 0, 256);
+
+        //brightness ijkl
+        else if(key =='i')
+            brightnessRange = ofClamp(brightnessRange += 0.1,0,127);
+        else if(key =='k')
+            brightnessRange = ofClamp(brightnessRange -= 0.1,0,127);
+        else if(key =='j')
+            brightness = ofWrap(--brightness, 0, 256);
+        else if(key =='l')
+            brightness = ofWrap(++brightness, 0, 256);
+        else if(key == '1')
             ;
-        else
-            return;
+        else return;
         
         //päivitä valikoima ja aloita piirto alusta, jos jotain näppäimistä painettiin:
         reset();

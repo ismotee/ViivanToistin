@@ -40,7 +40,7 @@ void pensseli::drawBrush() {
     ofPoint P(MAX_KOKO/2, MAX_KOKO/2);
     
     brushFbo.begin();
-        ofClear(ofColor(255,255,255, 0));
+        ofClear(ofColor(200,200,200, 0));
         
         //piirretään valkoisella brush läpinäkyvälle. Stroken piirrossa käytetään värimodulointia
         ofEnableBlendMode(OF_BLENDMODE_ADD);

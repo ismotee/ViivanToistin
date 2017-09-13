@@ -8,8 +8,7 @@ struct Arkisto {
     vector<Viiva> valikoidut;
 
     bool lataaViivatHakemistosta(std::string polku);
-    void valikoiHuenMukaan(float hue, float hueRange);
-    void valikoiVarinMukaan(float hue, float hueRange,float saturation, float satRange, float brightness, float brightRange);
+    void valikoiHuenMukaan(float hue, float range);
     const std::vector<Viiva>& haeValikoidut() const;
     int valikoitujenMaksimiKoko();
 };

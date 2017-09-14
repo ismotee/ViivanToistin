@@ -4,12 +4,14 @@
 #include "Arkisto.h"
 #include "Monitori.h"
 
-struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
+struct Ohjain:public Tilat, public Arkisto {
     
     float hue, hueRange,saturation,saturationRange,brightness,brightnessRange;
     int frame_n = 0;
     float muutosKerroin;
     bool shiftHold;
+    
+    Multimonitori selausMonitori, tallennusMonitori;
     
     Ohjain();
     void nextFrame();
@@ -19,7 +21,7 @@ struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     void update();
     void keyPressed(int key);
     void keyReleased(int key);
-    
+    void draw();
     void debugDraw(int x, int y);
     
     void selaa();

@@ -10,7 +10,7 @@ std::string getFrameFilename() {
 }
 
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(60), saturation(128),saturationRange(128),brightness(0), brightnessRange(30) {
+Ohjain::Ohjain() : hue(128), hueRange(128), saturation(0),saturationRange(60),brightness(0), brightnessRange(128) {
 
 }
 
@@ -29,12 +29,16 @@ void Ohjain::nextFrame() {
 void Ohjain::reset() {
     Arkisto::valikoiVarinMukaan(hue, hueRange,saturation,saturationRange,brightness,brightnessRange);
     frame_n = 0;
-    Multimonitori::lopetaViivat();
+    if (Tilat::tila == Selaa)
+        selausMonitori.lopetaViivat();
+    else if (Tilat::tila == Tallenna)
+        tallennusMonitori.lopetaViivat();
 }
 
 void Ohjain::setup() {
     Arkisto::lataaViivatHakemistosta("viivat/");
-    Multimonitori::setup();
+    selausMonitori.setup();
+    tallennusMonitori.setup();
     
     //päivitä valikoima:
     reset();
@@ -47,7 +51,7 @@ void Ohjain::update() {
 void Ohjain::selaa() {
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    //Multimonitori::piirraViivatKohdasta(kopio, frame_n);
+    selausMonitori.piirraViivatKohdasta(kopio, frame_n);
         
     nextFrame();
     
@@ -62,13 +66,23 @@ void Ohjain::tallenna() {
 
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    Multimonitori::piirraViivatKohdasta(kopio, frame_n);
+    tallennusMonitori.piirraViivatKohdasta(kopio, frame_n);
     
     //tallennetaan kuva:
-    Multimonitori::tallennaKuvana(getFrameFilename() );
+    tallennusMonitori.tallennaKuvana(getFrameFilename() );
     
     nextFrame();
 }
+
+
+void Ohjain::draw() {
+    if(Tilat::tila == Selaa)
+        selausMonitori.draw();
+    else if (Tilat::tila == Tallenna)
+        tallennusMonitori.draw();
+    
+}
+
 
 void Ohjain::debugDraw(int x, int y) {
     Tilat::debugDraw(x, y);
@@ -85,7 +99,6 @@ void Ohjain::debugDraw(int x, int y) {
     ofDrawBitmapString("brightness: " + ofToString(brightness), x, y + 160);
     ofDrawBitmapString("brightness range: " + ofToString(brightnessRange), x, y + 180);
     
-    ofDrawBitmapString("pensseleitä: " + ofToString(Multimonitori::pensselit.size() ), x, y + 200);
     ofDrawBitmapString("frame: " + ofToString(frame_n) + " / " + ofToString(Arkisto::valikoitujenMaksimiKoko()), x, y + 220);
     
     ofColor col;
@@ -106,8 +119,7 @@ void Ohjain::keyPressed(int key) {
 
     if (key == OF_KEY_TAB) {
         Tilat::vaihdaTilaa();
-        reset();
-        //Multimonitori::tyhjenna();
+        reset();        
     }
     
     if( key == OF_KEY_SHIFT)
@@ -146,11 +158,8 @@ void Ohjain::keyPressed(int key) {
             brightness = ofClamp(brightness+muutosKerroin, 0, 255);
         
         //r: tyhjennä
-        //1: päivitä
-        else if (key == 'r')
-            Multimonitori::tyhjenna();
-        else if(key == '1')
-            ;
+        else if (key == 'r') 
+            selausMonitori.tyhjenna();
         
         //muut näppäimet: ei tarvitse päivittää
         else return;

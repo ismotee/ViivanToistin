@@ -46,7 +46,11 @@ struct ViivanOminaisuus {
  * esim pisteet[2],paksuus[2].arvo, sumeus[2].arvo kertoo kaiken yhdestä pisteestä kun taas
  * haeKeskiarvot(&paksuus); palauttaa kaikki paksuus -ominaisuuden keskiarvot
  */
-
+enum ominaisuusEnumT{
+    PAKSUUS,
+    SUMEUS
+};
+    
 struct Viiva {
     //miten suurta osaa datasta käytetään tilastollisessa tarkastelussa:
     static const int OTANNAN_KOKO;
@@ -69,6 +73,9 @@ struct Viiva {
     
     vector<float> haeArvot(const vector<ViivanOminaisuus>* const ominaisuus) const;
     vector<float> haeArvot(const vector<ViivanOminaisuus>* const ominaisuus, unsigned int otanta) const;
+    
+    float haeArvoKohdasta(ominaisuusEnumT ominaisuus, unsigned int kohta) const;
+    float haeOtantaKohdasta(ominaisuusEnumT ominaisuus, unsigned int kohta, unsigned int otanta) const;
     
     vector<float> haeKeskiarvot(const vector<ViivanOminaisuus>* const ominaisuus) const;
     vector<float> haeKeskiarvot(const vector<ViivanOminaisuus>* const ominaisuus, unsigned int otanta) const;

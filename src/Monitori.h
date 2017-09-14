@@ -79,7 +79,9 @@ public:
     void draw();
 
     void piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigned int n);
+    void piirraViivatKohdasta(const std::vector<Viiva>& viivat, unsigned int n);
 
     void tyhjenna();
+    void lopetaViivat();
     void tallennaKuvana(std::string filename = "kuvat/default.png");
 };

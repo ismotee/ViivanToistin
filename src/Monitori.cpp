@@ -385,7 +385,8 @@ void Multimonitori::luoPensselit(unsigned int n) {
     for(pensseli& p : pensselit)
         p.setup();
     
-    tyhjenna();
+    //tyhjenna();
+    lopetaViivat();
 }
 
 
@@ -442,6 +443,29 @@ void Multimonitori::piirraViivatAlusta(const std::vector<Viiva>& viivat, unsigne
 }
 
 
+void Multimonitori::piirraViivatKohdasta(const std::vector<Viiva>& viivat, unsigned int n) {
+    if(viivat.empty() ) {
+        return;
+    }
+        
+    //luodaan pensselit jos niitä ei ole
+    if(pensselit.size() < viivat.size() ) {
+        luoPensselit(viivat.size() );
+    }
+    
+    for(unsigned int viiva_i = 0; viiva_i < viivat.size(); viiva_i++) {
+        if(n >= viivat[viiva_i].pisteet.size() )
+            continue;
+
+        //pehmennys ottamalla 10 viimeistä arvoa        
+        float paksuus = viivat[viiva_i].haeOtantaKohdasta(PAKSUUS, n, 10);
+        float sumeus = viivat[viiva_i].haeArvoKohdasta(SUMEUS, n);
+
+        teeVeto( viivat[viiva_i].pisteet[n].sijainti, viiva_i, paksuus, sumeus, viivat[viiva_i].vari);
+    }
+}
+
+
 void Multimonitori::tallennaKuvana(std::string filename) {
     ofPixels px;
     viivaFbo.readToPixels(px);
@@ -453,7 +477,11 @@ void Multimonitori::tyhjenna() {
     viivaFbo.begin();
         ofClear(pensseli::clearColor);
     viivaFbo.end();
-    
+    lopetaViivat();
+}
+
+
+void Multimonitori::lopetaViivat() {
     for(pensseli& p : pensselit)
         p.lopetaViiva();
 }

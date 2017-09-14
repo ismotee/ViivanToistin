@@ -10,7 +10,7 @@ std::string getFrameFilename() {
 }
 
 
-Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(128), saturation(128),saturationRange(128),brightness(128), brightnessRange(128) {
+Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(60), saturation(128),saturationRange(128),brightness(0), brightnessRange(30) {
 
 }
 
@@ -21,13 +21,15 @@ void Ohjain::nextFrame() {
         frame_n = 0;
         if(Tilat::tila == Tallenna)
             vaihdaTilaa();
+        reset();
     }
 }
 
 
 void Ohjain::reset() {
     Arkisto::valikoiVarinMukaan(hue, hueRange,saturation,saturationRange,brightness,brightnessRange);
-    frame_n = 0;    
+    frame_n = 0;
+    Multimonitori::lopetaViivat();
 }
 
 void Ohjain::setup() {
@@ -45,7 +47,7 @@ void Ohjain::update() {
 void Ohjain::selaa() {
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    Multimonitori::piirraViivatAlusta(kopio, frame_n);
+    //Multimonitori::piirraViivatKohdasta(kopio, frame_n);
         
     nextFrame();
     
@@ -60,7 +62,7 @@ void Ohjain::tallenna() {
 
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
-    Multimonitori::piirraViivatAlusta(kopio, frame_n);
+    Multimonitori::piirraViivatKohdasta(kopio, frame_n);
     
     //tallennetaan kuva:
     Multimonitori::tallennaKuvana(getFrameFilename() );
@@ -105,6 +107,7 @@ void Ohjain::keyPressed(int key) {
     if (key == OF_KEY_TAB) {
         Tilat::vaihdaTilaa();
         reset();
+        //Multimonitori::tyhjenna();
     }
     
     if( key == OF_KEY_SHIFT)
@@ -141,8 +144,15 @@ void Ohjain::keyPressed(int key) {
             brightness = ofClamp(brightness-muutosKerroin, 0, 255);
         else if(key =='l')
             brightness = ofClamp(brightness+muutosKerroin, 0, 255);
+        
+        //r: tyhjennä
+        //1: päivitä
+        else if (key == 'r')
+            Multimonitori::tyhjenna();
         else if(key == '1')
             ;
+        
+        //muut näppäimet: ei tarvitse päivittää
         else return;
         
         //päivitä valikoima ja aloita piirto alusta, jos jotain näppäimistä painettiin:

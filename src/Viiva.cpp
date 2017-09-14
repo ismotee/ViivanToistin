@@ -165,6 +165,50 @@ vector<float> Viiva::haeArvot(const vector<ViivanOminaisuus>* const ominaisuus, 
     return arvot;
 }
 
+
+float Viiva::haeArvoKohdasta(ominaisuusEnumT ominaisuus, unsigned int kohta) const {
+    switch(ominaisuus) {
+        case PAKSUUS:
+            return paksuus[kohta].arvo;
+        case SUMEUS:
+            return sumeus[kohta].arvo;
+        default:
+            return 0;
+    }
+}
+
+
+float Viiva::haeOtantaKohdasta(ominaisuusEnumT ominaisuus, unsigned int kohta, unsigned int otanta) const {
+    //oletetaan että pisteet.size() on myös sumeus- ja paksuusvektorien koko. todo: vektorien kokotarkistus
+    if(otanta > pisteet.size() )
+        otanta = pisteet.size();
+    
+    if(kohta >= pisteet.size() )
+        kohta = pisteet.size() - 1;
+    
+    if( (int)kohta - (int)otanta < 0) {
+        otanta = kohta;
+    }
+    
+    vector<float> arvot(otanta);
+
+    for(unsigned int i=0; i < otanta; i++) {
+        switch(ominaisuus) {
+            case PAKSUUS:
+                arvot[i] = paksuus[kohta-i].arvo;
+                break;
+            case SUMEUS:
+                arvot[i] = sumeus[kohta-i].arvo;
+                break;
+            default:
+                return 0;
+        }
+    }
+    
+    return keskiarvo(arvot);
+}
+
+
 vector<float> Viiva::haeKeskiarvot(const vector<ViivanOminaisuus>* const ominaisuus) const{
     vector<float> keskiarvot;
     keskiarvot.resize(ominaisuus->size(), 0);

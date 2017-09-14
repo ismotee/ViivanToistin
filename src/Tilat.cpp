@@ -27,15 +27,6 @@ void Tilat::debugDraw(int x, int y) {
 }
 
 void Tilat::keyPressed(int key) {
-    if(key == OF_KEY_RETURN)
-        vaihdaTilaa();
 
-    switch(tila) {
-        case Selaa: 
-            break;
-        case Tallenna: 
-            break;
-    }
-    
     
 }

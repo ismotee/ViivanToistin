@@ -17,8 +17,11 @@ Ohjain::Ohjain() : hue(ofRandom(256) ), hueRange(128), saturation(128),saturatio
 
 void Ohjain::nextFrame() {
     frame_n++;
-    if(frame_n >= Arkisto::valikoitujenMaksimiKoko()) 
+    if(frame_n >= Arkisto::valikoitujenMaksimiKoko()) {
         frame_n = 0;
+        if(Tilat::tila == Tallenna)
+            vaihdaTilaa();
+    }
 }
 
 
@@ -45,9 +48,16 @@ void Ohjain::selaa() {
     Multimonitori::piirraViivatAlusta(kopio, frame_n);
         
     nextFrame();
+    
+    if(shiftHold)
+        muutosKerroin = 100;
+    else
+        muutosKerroin = 1;
+    
 }
 
 void Ohjain::tallenna() {
+
     //haetaan viivat ja piirretään n pistettä alusta:
     vector<Viiva> kopio = Arkisto::haeValikoidut();
     Multimonitori::piirraViivatAlusta(kopio, frame_n);
@@ -86,45 +96,51 @@ void Ohjain::debugDraw(int x, int y) {
     ofSetColor(col);
     ofDrawRectangle(50,ofGetHeight()-50,50,50);
     
+    ofDrawBitmapString(ofToString(shiftHold),x,y+240);
 }
 
 void Ohjain::keyPressed(int key) {
     Tilat::keyPressed(key);
 
-    if (key == OF_KEY_TAB)
+    if (key == OF_KEY_TAB) {
         Tilat::vaihdaTilaa();
-
+        reset();
+    }
+    
+    if( key == OF_KEY_SHIFT)
+        shiftHold = !shiftHold;
+    
     if (Tilat::tila == Selaa) {
         
         //hue wasd
         if(key =='w')
-            hueRange = ofClamp(hueRange += 0.1,0,128);
+            hueRange = ofClamp(hueRange + muutosKerroin,0,128);
         else if(key =='s')
-            hueRange = ofClamp(hueRange -= 0.1,0,128);
+            hueRange = ofClamp(hueRange - muutosKerroin,0,128);
         else if(key =='a')
-            hue = ofWrap(--hue, 0, 256);
+            hue = ofWrap(hue-muutosKerroin, 0, 256);
         else if(key =='d')
-            hue = ofWrap(++hue, 0, 256);
+            hue = ofWrap(hue + muutosKerroin, 0, 256);
 
         //saturation tfgh
         else if(key =='t')
-            saturationRange = ofClamp(saturationRange += 0.1,0,128);
+            saturationRange = ofClamp(saturationRange + muutosKerroin,0,128);
         else if(key =='g')
-            saturationRange = ofClamp(saturationRange -= 0.1,0,128);
+            saturationRange = ofClamp(saturationRange - muutosKerroin,0,128);
         else if(key =='f')
-            saturation = ofWrap(--saturation, 0, 256);
+            saturation = ofClamp(saturation-muutosKerroin, 0, 255);
         else if(key =='h')
-            saturation = ofWrap(++saturation, 0, 256);
+            saturation = ofClamp(saturation+muutosKerroin, 0, 255);
 
         //brightness ijkl
         else if(key =='i')
-            brightnessRange = ofClamp(brightnessRange += 0.1,0,129);
+            brightnessRange = ofClamp(brightnessRange+ muutosKerroin,0,129);
         else if(key =='k')
-            brightnessRange = ofClamp(brightnessRange -= 0.1,0,129);
+            brightnessRange = ofClamp(brightnessRange- muutosKerroin,0,129);
         else if(key =='j')
-            brightness = ofWrap(--brightness, 0, 256);
+            brightness = ofClamp(brightness-muutosKerroin, 0, 255);
         else if(key =='l')
-            brightness = ofWrap(++brightness, 0, 256);
+            brightness = ofClamp(brightness+muutosKerroin, 0, 255);
         else if(key == '1')
             ;
         else return;
@@ -132,4 +148,8 @@ void Ohjain::keyPressed(int key) {
         //päivitä valikoima ja aloita piirto alusta, jos jotain näppäimistä painettiin:
         reset();
     }
+}
+
+void Ohjain::keyReleased(int key) {
+        
 }

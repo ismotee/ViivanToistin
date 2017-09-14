@@ -8,6 +8,8 @@ struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     
     float hue, hueRange,saturation,saturationRange,brightness,brightnessRange;
     int frame_n = 0;
+    float muutosKerroin;
+    bool shiftHold;
     
     Ohjain();
     void nextFrame();
@@ -16,6 +18,7 @@ struct Ohjain:public Tilat, public Arkisto,public Multimonitori {
     void setup();
     void update();
     void keyPressed(int key);
+    void keyReleased(int key);
     
     void debugDraw(int x, int y);
     

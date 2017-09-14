@@ -27,7 +27,7 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    Ohjain::keyReleased(key);
 }
 
 //--------------------------------------------------------------
